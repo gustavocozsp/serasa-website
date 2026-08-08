@@ -41,8 +41,7 @@ export default async function LoginPage({
         <p className="section__eyebrow">Acesso</p>
         <h1 className="login-page__title">Login Discord</h1>
         <p className="login-page__copy">
-          Só entram contas com licença ativa no painel SERASA. Sem acesso
-          liberado, o login é bloqueado.
+          Só entra quem tem licença ativa.
         </p>
 
         {message ? <p className="login-page__error">{message}</p> : null}

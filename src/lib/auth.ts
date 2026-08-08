@@ -50,9 +50,13 @@ export function getOAuthRedirectUri() {
 }
 
 export function discordAvatarUrl(user: Pick<PublicUser, 'discordId' | 'avatar'>) {
-  if (user.avatar) {
-    const ext = user.avatar.startsWith('a_') ? 'gif' : 'png'
-    return `https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.${ext}?size=128`
+  const avatar = String(user.avatar || '').trim()
+  if (avatar.startsWith('http://') || avatar.startsWith('https://')) {
+    return avatar
+  }
+  if (avatar) {
+    const ext = avatar.startsWith('a_') ? 'gif' : 'png'
+    return `https://cdn.discordapp.com/avatars/${user.discordId}/${avatar}.${ext}?size=128`
   }
   const index = Number(user.discordId.slice(-1)) % 6
   return `https://cdn.discordapp.com/embed/avatars/${index}.png`
