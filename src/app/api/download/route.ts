@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-const CDN_BASE = (process.env.SERASA_CDN_URL || 'https://serasa.best/win').replace(
+const CDN_BASE = (process.env.SERASA_CDN_URL || 'https://cdn.serasa.best/win').replace(
   /\/$/,
   '',
 )

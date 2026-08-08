@@ -4,6 +4,7 @@ import {
   OAUTH_STATE_COOKIE,
   REFRESH_COOKIE,
   accessCookieOptions,
+  clearCookieOptions,
   getApiBaseUrl,
   getOAuthRedirectUri,
   getSiteUrl,
@@ -58,6 +59,6 @@ export async function GET(req: NextRequest) {
   const res = NextResponse.redirect(`${site}/dashboard`)
   res.cookies.set(ACCESS_COOKIE, login.accessToken, accessCookieOptions(login.expiresIn || 900))
   res.cookies.set(REFRESH_COOKIE, login.refreshToken, refreshCookieOptions())
-  res.cookies.set(OAUTH_STATE_COOKIE, '', { path: '/', maxAge: 0 })
+  res.cookies.set(OAUTH_STATE_COOKIE, '', clearCookieOptions())
   return res
 }

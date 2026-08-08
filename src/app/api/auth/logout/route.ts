@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import {
   ACCESS_COOKIE,
   REFRESH_COOKIE,
+  clearCookieOptions,
   getApiBaseUrl,
   getSiteUrl,
   readAuthCookies,
@@ -21,8 +22,8 @@ export async function POST() {
   }
 
   const res = NextResponse.json({ ok: true })
-  res.cookies.set(ACCESS_COOKIE, '', { path: '/', maxAge: 0 })
-  res.cookies.set(REFRESH_COOKIE, '', { path: '/', maxAge: 0 })
+  res.cookies.set(ACCESS_COOKIE, '', clearCookieOptions())
+  res.cookies.set(REFRESH_COOKIE, '', clearCookieOptions())
   return res
 }
 
@@ -40,7 +41,7 @@ export async function GET() {
   }
 
   const res = NextResponse.redirect(`${getSiteUrl()}/`)
-  res.cookies.set(ACCESS_COOKIE, '', { path: '/', maxAge: 0 })
-  res.cookies.set(REFRESH_COOKIE, '', { path: '/', maxAge: 0 })
+  res.cookies.set(ACCESS_COOKIE, '', clearCookieOptions())
+  res.cookies.set(REFRESH_COOKIE, '', clearCookieOptions())
   return res
 }

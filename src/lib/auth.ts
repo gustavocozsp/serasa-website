@@ -62,23 +62,52 @@ export function cookieSecure() {
   return process.env.NODE_ENV === 'production'
 }
 
-export function accessCookieOptions(maxAge = 15 * 60) {
+export function cookieDomain(): string | undefined {
+  try {
+    const host = new URL(getSiteUrl()).hostname
+    if (host === 'serasa.best' || host.endsWith('.serasa.best')) {
+      return '.serasa.best'
+    }
+  } catch {}
+  return undefined
+}
+
+function baseCookieOptions() {
+  const domain = cookieDomain()
   return {
     httpOnly: true,
     secure: cookieSecure(),
     sameSite: 'lax' as const,
     path: '/',
+    ...(domain ? { domain } : {}),
+  }
+}
+
+export function accessCookieOptions(maxAge = 15 * 60) {
+  return {
+    ...baseCookieOptions(),
     maxAge,
   }
 }
 
 export function refreshCookieOptions(maxAge = 7 * 24 * 60 * 60) {
   return {
-    httpOnly: true,
-    secure: cookieSecure(),
-    sameSite: 'lax' as const,
-    path: '/',
+    ...baseCookieOptions(),
     maxAge,
+  }
+}
+
+export function oauthStateCookieOptions(maxAge = 10 * 60) {
+  return {
+    ...baseCookieOptions(),
+    maxAge,
+  }
+}
+
+export function clearCookieOptions() {
+  return {
+    ...baseCookieOptions(),
+    maxAge: 0,
   }
 }
 

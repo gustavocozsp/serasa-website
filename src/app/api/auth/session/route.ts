@@ -3,6 +3,7 @@ import {
   ACCESS_COOKIE,
   REFRESH_COOKIE,
   accessCookieOptions,
+  clearCookieOptions,
   getSiteUrl,
   readAuthCookies,
   refreshCookieOptions,
@@ -24,8 +25,8 @@ export async function GET(req: NextRequest) {
     const out = NextResponse.redirect(
       `${site}/login?error=${encodeURIComponent(data?.code || 'session_invalid')}`,
     )
-    out.cookies.set(ACCESS_COOKIE, '', { path: '/', maxAge: 0 })
-    out.cookies.set(REFRESH_COOKIE, '', { path: '/', maxAge: 0 })
+    out.cookies.set(ACCESS_COOKIE, '', clearCookieOptions())
+    out.cookies.set(REFRESH_COOKIE, '', clearCookieOptions())
     return out
   }
 

@@ -16,7 +16,8 @@ const ERRORS: Record<string, string> = {
   banned: 'Esta conta está banida. Fale com o suporte no Discord.',
   oauth_config:
     'Login Discord não está configurado no site. Avise o administrador.',
-  invalid_state: 'Sessão de login inválida. Tente novamente.',
+  invalid_state:
+    'O login Discord falhou (cookie OAuth). Use serasa.best e clique em Entrar de novo.',
   discord_exchange: 'Falha ao autenticar com o Discord. Tente de novo.',
   access_denied: 'Acesso negado. Verifique se a licença ainda está ativa.',
 }

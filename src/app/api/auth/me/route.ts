@@ -3,6 +3,7 @@ import {
   ACCESS_COOKIE,
   REFRESH_COOKIE,
   accessCookieOptions,
+  clearCookieOptions,
   fetchWebMe,
   readAuthCookies,
   refreshCookieOptions,
@@ -22,8 +23,8 @@ export async function GET() {
         { ok: false, error: data?.error || 'Acesso negado', code: data?.code || 'access_denied' },
         { status: 403 },
       )
-      out.cookies.set(ACCESS_COOKIE, '', { path: '/', maxAge: 0 })
-      out.cookies.set(REFRESH_COOKIE, '', { path: '/', maxAge: 0 })
+      out.cookies.set(ACCESS_COOKIE, '', clearCookieOptions())
+      out.cookies.set(REFRESH_COOKIE, '', clearCookieOptions())
       return out
     }
   }
@@ -51,8 +52,8 @@ export async function GET() {
       },
       { status: 401 },
     )
-    out.cookies.set(ACCESS_COOKIE, '', { path: '/', maxAge: 0 })
-    out.cookies.set(REFRESH_COOKIE, '', { path: '/', maxAge: 0 })
+    out.cookies.set(ACCESS_COOKIE, '', clearCookieOptions())
+    out.cookies.set(REFRESH_COOKIE, '', clearCookieOptions())
     return out
   }
 

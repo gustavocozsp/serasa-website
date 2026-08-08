@@ -1,18 +1,26 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import {
   ACCESS_COOKIE,
   OAUTH_STATE_COOKIE,
   REFRESH_COOKIE,
-  cookieSecure,
+  clearCookieOptions,
+  fetchWebMe,
   getDiscordClientId,
   getOAuthRedirectUri,
   getSiteUrl,
+  oauthStateCookieOptions,
   readAuthCookies,
-  fetchWebMe,
 } from '@/lib/auth'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const site = getSiteUrl()
+  const siteHost = new URL(site).host
+  const reqHost = req.headers.get('x-forwarded-host') || req.nextUrl.host
+
+  if (reqHost !== siteHost) {
+    return NextResponse.redirect(`${site}/api/auth/login`)
+  }
+
   const { accessToken } = await readAuthCookies()
 
   if (accessToken) {
@@ -41,16 +49,9 @@ export async function GET() {
     `https://discord.com/api/oauth2/authorize?${params.toString()}`,
   )
 
-  res.cookies.set(OAUTH_STATE_COOKIE, state, {
-    httpOnly: true,
-    secure: cookieSecure(),
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 10 * 60,
-  })
-
-  res.cookies.set(ACCESS_COOKIE, '', { path: '/', maxAge: 0 })
-  res.cookies.set(REFRESH_COOKIE, '', { path: '/', maxAge: 0 })
+  res.cookies.set(OAUTH_STATE_COOKIE, state, oauthStateCookieOptions())
+  res.cookies.set(ACCESS_COOKIE, '', clearCookieOptions())
+  res.cookies.set(REFRESH_COOKIE, '', clearCookieOptions())
 
   return res
 }

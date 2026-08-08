@@ -1,6 +1,6 @@
 export const DOWNLOAD_URL = '/api/download'
 export const DOWNLOAD_LABEL = 'SERASA Setup (Windows)'
-export const DOWNLOAD_CDN_BASE = 'https://serasa.best/win'
+export const DOWNLOAD_CDN_BASE = 'https://cdn.serasa.best/win'
 
 export const TUTORIALS = [
   {
