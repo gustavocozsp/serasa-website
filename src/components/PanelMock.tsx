@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import {
   Crosshair,
@@ -77,7 +77,7 @@ export function PanelMock() {
           <div className="pm__titlebar">
             <div className="pm__titlebrand">
               <span className="pm__dot" />
-              SERASA
+              SRS
             </div>
             <div className="pm__winbtns">
               <span className="pm__winbtn pm__winbtn--min" />
@@ -87,7 +87,7 @@ export function PanelMock() {
 
           <div className="pm__workspace">
             <aside className="pm__sidebar">
-              <div className="pm__sidebrand">SERASA</div>
+              <div className="pm__sidebrand">SRS</div>
 
               <nav className="pm__nav">
                 {NAV.map((item) => {
@@ -112,8 +112,8 @@ export function PanelMock() {
                 <div className="pm__user">
                   <div className="pm__avatar">S</div>
                   <div className="pm__usermeta">
-                    <div className="pm__username">Serasa</div>
-                    <div className="pm__handle">@serasa</div>
+                    <div className="pm__username">SRS</div>
+                    <div className="pm__handle">@srs</div>
                   </div>
                 </div>
                 <div className="pm__logout">
@@ -138,7 +138,7 @@ export function PanelMock() {
                   Olá, <span className="pm__name">jogador</span>
                 </h2>
                 <p className="pm__lead">
-                  O <strong>SERASA</strong> junta otimização e ajustes de mouse
+                  O <strong>SRS</strong> junta otimização e ajustes de mouse
                   num só painel. Escolhe o que precisa e aplica em um toque.
                 </p>
                 <div className="pm__ctas">
@@ -155,7 +155,7 @@ export function PanelMock() {
                   <h3>Explora o painel</h3>
                   <p>
                     Atalhos rápidos para as ferramentas principais do{' '}
-                    <strong>SERASA</strong>.
+                    <strong>SRS</strong>.
                   </p>
                 </div>
                 <div className="pm__cards">

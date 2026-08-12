@@ -9,10 +9,10 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero__inner">
           <div className="hero__copy">
-            <h1 className="hero__mark">SERASA</h1>
+            <h1 className="hero__mark">SRS</h1>
             <p className="hero__headline">Domine o jogo. Seja o melhor.</p>
             <p className="hero__sub">
-              Chega de ficar pra trás. Ativa o SERASA e joga no nível máximo.
+              Chega de ficar pra trás. Ativa o SRS e joga no nível máximo.
             </p>
             <div className="hero__actions">
               <Link href="/loja" className="btn btn--neon btn--lg">
@@ -41,7 +41,7 @@ export default function HomePage() {
             <p className="section__eyebrow">Módulos</p>
             <h2 className="section__title">Tudo que você precisa, num só painel</h2>
             <p className="section__copy">
-              O SERASA junta otimização e ajustes de input num fluxo limpo.
+              O SRS junta otimização e ajustes de input num fluxo limpo.
               Escolhe o que precisa e aplica em um toque.
             </p>
           </div>

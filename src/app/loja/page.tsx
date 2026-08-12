@@ -1,11 +1,11 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import Link from 'next/link'
 import { DISCORD_URL, PLANS } from '@/data/site'
 
 export const metadata: Metadata = {
   title: 'Loja',
   description:
-    'Compre sua licença SERASA. Planos semanal, mensal, trimestral e anual com acesso completo ao painel.',
+    'Compre sua licença SRS. Planos semanal, mensal, trimestral e anual com acesso completo ao painel.',
 }
 
 export default function LojaPage() {
@@ -14,7 +14,7 @@ export default function LojaPage() {
       <div className="container">
         <div className="section__head">
           <p className="section__eyebrow">Loja</p>
-          <h1 className="section__title">Licenças SERASA</h1>
+          <h1 className="section__title">Licenças SRS</h1>
           <p className="section__copy">
             Compre o melhor. Seja o melhor. Seja MVP.
           </p>

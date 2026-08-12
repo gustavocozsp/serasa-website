@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import Link from 'next/link'
 import { LogoutButton } from '@/components/LogoutButton'
 import { DOWNLOAD_LABEL, DOWNLOAD_URL, QUICK_STEPS } from '@/data/dashboard'
@@ -12,7 +12,7 @@ import { requireDashboardUser } from '@/lib/session'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
-  description: 'Área do cliente SERASA.',
+  description: 'Área do cliente SRS.',
   robots: { index: false, follow: false },
 }
 

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { DISCORD_URL, SOCIALS } from '@/data/site'
 
 const LINKS = [
   { href: '/', label: 'Início' },
@@ -9,12 +10,16 @@ const LINKS = [
 
 export function Footer() {
   const year = new Date().getFullYear()
+  const discord = SOCIALS.find((s) => s.id === 'discord')?.href || DISCORD_URL
+  const twitter = SOCIALS.find((s) => s.id === 'twitter')?.href || 'https://x.com/srs'
+  const youtube =
+    SOCIALS.find((s) => s.id === 'youtube')?.href || 'https://www.youtube.com/@srs'
 
   return (
     <footer className="footer">
       <div className="footer__glow" aria-hidden />
       <div className="footer__mark" aria-hidden>
-        SERASA
+        SRS
       </div>
 
       <div className="footer__shell">
@@ -23,7 +28,7 @@ export function Footer() {
             <div className="footer__identity">
               <span className="footer__dot" aria-hidden />
               <div>
-                <p className="footer__kicker">SERASA</p>
+                <p className="footer__kicker">SRS</p>
                 <p className="footer__line">Domine o jogo. Seja o melhor.</p>
               </div>
             </div>
@@ -33,7 +38,7 @@ export function Footer() {
                 Comprar licença
               </Link>
               <a
-                href="https://discord.gg/serasa"
+                href={discord}
                 className="btn btn--ghost"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -55,7 +60,7 @@ export function Footer() {
 
             <div className="footer__socials">
               <a
-                href="https://discord.gg/serasa"
+                href={discord}
                 className="footer__social"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -67,7 +72,7 @@ export function Footer() {
                 </svg>
               </a>
               <a
-                href="https://x.com/serasa"
+                href={twitter}
                 className="footer__social"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -79,7 +84,7 @@ export function Footer() {
                 </svg>
               </a>
               <a
-                href="https://www.youtube.com/@serasa"
+                href={youtube}
                 className="footer__social"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -94,9 +99,9 @@ export function Footer() {
           </div>
 
           <div className="footer__meta">
-            <span>© {year} SERASA</span>
+            <span>© {year} SRS</span>
             <span className="footer__sep" aria-hidden />
-            <span>serasa.best</span>
+            <span>srs.lat</span>
             <span className="footer__sep" aria-hidden />
             <span>Todos os direitos reservados</span>
           </div>

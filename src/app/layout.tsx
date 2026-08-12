@@ -22,22 +22,39 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: {
-    default: 'SERASA · Domine o jogo',
-    template: '%s · SERASA',
+    default: 'SRS · Domine o jogo',
+    template: '%s · SRS',
   },
   description:
-    'SERASA: otimização, Pure Mode, mira, skins e ajustes de input para FiveM. Domine o jogo. Seja o melhor.',
-  metadataBase: new URL('https://serasa.best'),
+    'SRS: otimização, Pure Mode, mira, skins e ajustes de input para FiveM. Domine o jogo. Seja o melhor.',
+  metadataBase: new URL('https://srs.lat'),
   icons: {
     icon: '/favicon.svg',
   },
   openGraph: {
-    title: 'SERASA · Domine o jogo',
+    title: 'SRS · Domine o jogo',
     description:
       'Otimização e utilitários para FiveM num só painel. Domine o jogo. Seja o melhor.',
-    siteName: 'SERASA',
+    siteName: 'SRS',
     locale: 'pt_BR',
     type: 'website',
+    url: 'https://srs.lat',
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'SRS',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SRS · Domine o jogo',
+    description:
+      'Otimização e utilitários para FiveM num só painel. Domine o jogo. Seja o melhor.',
+    images: ['/og.png'],
   },
 }
 

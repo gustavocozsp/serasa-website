@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 
@@ -8,7 +8,7 @@ const PORT = 3847
 
 export default function DesktopAuthPage() {
   const [status, setStatus] = useState<Status>('connecting')
-  const [detail, setDetail] = useState('Conectando ao painel SERASA…')
+  const [detail, setDetail] = useState('Conectando ao painel SRS…')
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -22,7 +22,7 @@ export default function DesktopAuthPage() {
     const code = params.get('code')
     if (!code) {
       setStatus('error')
-      setDetail('Código OAuth ausente. Abra o login pelo painel SERASA.')
+      setDetail('Código OAuth ausente. Abra o login pelo painel SRS.')
       return
     }
 
@@ -49,7 +49,7 @@ export default function DesktopAuthPage() {
       .catch(() => {
         setStatus('error')
         setDetail(
-          'Não achamos o painel aberto neste PC. Abra o SERASA e tente entrar de novo.',
+          'Não achamos o painel aberto neste PC. Abra o SRS e tente entrar de novo.',
         )
       })
       .finally(() => {
@@ -65,7 +65,7 @@ export default function DesktopAuthPage() {
   return (
     <section className="desktop-auth">
       <div className="desktop-auth__card">
-        <p className="desktop-auth__brand">SERASA</p>
+        <p className="desktop-auth__brand">SRS</p>
         <span className={`desktop-auth__pill${status === 'ok' ? ' is-ok' : ''}${status === 'error' ? ' is-err' : ''}`}>
           {status === 'connecting' ? 'Conectando' : status === 'ok' ? 'Autenticado' : 'Atenção'}
         </span>

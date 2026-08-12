@@ -78,7 +78,7 @@ export function Header() {
         <nav className="hud__dock" aria-label="Principal">
           <Link href="/" className="hud__brand" onClick={() => setOpen(false)}>
             <span className="hud__brand-dot" aria-hidden />
-            <span className="hud__brand-text">SERASA</span>
+            <span className="hud__brand-text">SRS</span>
           </Link>
 
           <div className="hud__rail hud__rail--bar">

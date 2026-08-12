@@ -1,9 +1,9 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Termos de uso',
-  description: 'Termos de uso do SERASA: regras de licença, uso do software e responsabilidades.',
+  description: 'Termos de uso do SRS: regras de licença, uso do software e responsabilidades.',
 }
 
 export default function TermosPage() {
@@ -28,7 +28,7 @@ export default function TermosPage() {
               <span>01</span> Aceitação
             </h2>
             <p>
-              Ao adquirir, baixar, instalar ou utilizar o software SERASA
+              Ao adquirir, baixar, instalar ou utilizar o software SRS
               (&quot;Software&quot;), você concorda com estes Termos de Uso.
               Se não concordar, não utilize o Software.
             </p>
@@ -39,7 +39,7 @@ export default function TermosPage() {
               <span>02</span> Licença de uso
             </h2>
             <p>
-              O SERASA concede a você uma licença pessoal, limitada, não
+              O SRS concede a você uma licença pessoal, limitada, não
               exclusiva, intransferível e revogável para usar o Software
               durante o período ativo da sua assinatura (semana, mês,
               trimestre ou ano), vinculada à sua conta Discord.
@@ -84,7 +84,7 @@ export default function TermosPage() {
               <li>Usar o Software para violar leis ou direitos de terceiros.</li>
               <li>Tentar burlar proteções, limites de licença ou sistemas de autenticação.</li>
               <li>Distribuir cracks, keys, dumps ou builds não oficiais.</li>
-              <li>Assediar a equipe ou a comunidade do SERASA.</li>
+              <li>Assediar a equipe ou a comunidade do SRS.</li>
             </ul>
           </section>
 
@@ -107,7 +107,7 @@ export default function TermosPage() {
               <span>07</span> Atualizações
             </h2>
             <p>
-              O SERASA pode publicar atualizações, correções e novos
+              O SRS pode publicar atualizações, correções e novos
               módulos. Algumas funções podem mudar, ser descontinuadas ou
               exigir versão mínima do sistema. O uso contínuo após
               atualizações implica aceitação das mudanças razoáveis.
@@ -132,7 +132,7 @@ export default function TermosPage() {
               <span>09</span> Limitação de responsabilidade
             </h2>
             <p>
-              Na máxima extensão permitida pela lei, o SERASA não se
+              Na máxima extensão permitida pela lei, o SRS não se
               responsabiliza por danos indiretos, lucros cessantes, perda
               de dados, banimentos em jogos ou plataformas de terceiros ou
               prejuízos decorrentes do uso ou da impossibilidade de uso
@@ -170,7 +170,7 @@ export default function TermosPage() {
             </h2>
             <p>
               Dúvidas sobre estes termos: Discord oficial{' '}
-              <a href="https://discord.gg/serasa">discord.gg/serasa</a>.
+              <a href="https://discord.gg/srs">discord.gg/srs</a>.
               Também veja a{' '}
               <Link href="/privacidade">política de privacidade</Link>.
             </p>

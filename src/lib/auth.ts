@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers'
 
-export const ACCESS_COOKIE = 'serasa_web_access'
-export const REFRESH_COOKIE = 'serasa_web_refresh'
-export const OAUTH_STATE_COOKIE = 'serasa_oauth_state'
+export const ACCESS_COOKIE = 'srs_web_access'
+export const REFRESH_COOKIE = 'srs_web_refresh'
+export const OAUTH_STATE_COOKIE = 'srs_oauth_state'
 
 export type PublicUser = {
   discordId: string
@@ -23,6 +23,8 @@ export type PublicUser = {
 
 export function getApiBaseUrl() {
   return (
+    process.env.SRS_API_URL ||
+    process.env.NEXT_PUBLIC_SRS_API_URL ||
     process.env.SERASA_API_URL ||
     process.env.NEXT_PUBLIC_SERASA_API_URL ||
     'https://serasa-api-best.squareweb.app'
@@ -33,7 +35,7 @@ export function getSiteUrl() {
   return (
     process.env.NEXT_PUBLIC_SITE_URL ||
     process.env.SITE_URL ||
-    'https://serasa.best'
+    'https://srs.lat'
   ).replace(/\/$/, '')
 }
 
@@ -69,8 +71,8 @@ export function cookieSecure() {
 export function cookieDomain(): string | undefined {
   try {
     const host = new URL(getSiteUrl()).hostname
-    if (host === 'serasa.best' || host.endsWith('.serasa.best')) {
-      return '.serasa.best'
+    if (host === 'srs.lat' || host.endsWith('.srs.lat')) {
+      return '.srs.lat'
     }
   } catch {}
   return undefined

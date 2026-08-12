@@ -1,10 +1,10 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Política de privacidade',
   description:
-    'Política de privacidade do SERASA: dados coletados, uso, retenção e seus direitos.',
+    'Política de privacidade do SRS: dados coletados, uso, retenção e seus direitos.',
 }
 
 export default function PrivacidadePage() {
@@ -29,10 +29,10 @@ export default function PrivacidadePage() {
               <span>01</span> Introdução
             </h2>
             <p>
-              Esta Política descreve como o SERASA (&quot;nós&quot;) trata
+              Esta Política descreve como o SRS (&quot;nós&quot;) trata
               informações pessoais no site, no app desktop e nos serviços
               associados (incluindo autenticação e licenciamento). Ao usar
-              o SERASA, você declara ciência deste documento.
+              o SRS, você declara ciência deste documento.
             </p>
           </section>
 
@@ -184,8 +184,8 @@ export default function PrivacidadePage() {
             </h2>
             <p>
               Privacidade: Discord{' '}
-              <a href="https://discord.gg/serasa">discord.gg/serasa</a>.
-              Site: serasa.best. Veja também os{' '}
+              <a href="https://discord.gg/srs">discord.gg/srs</a>.
+              Site: srs.lat. Veja também os{' '}
               <Link href="/termos">termos de uso</Link>.
             </p>
           </section>
