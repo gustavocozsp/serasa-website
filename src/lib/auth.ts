@@ -32,11 +32,46 @@ export function getApiBaseUrl() {
 }
 
 export function getSiteUrl() {
-  return (
+  let raw = (
     process.env.NEXT_PUBLIC_SITE_URL ||
     process.env.SITE_URL ||
     'https://srs.lat'
-  ).replace(/\/$/, '')
+  )
+    .trim()
+    .replace(/\/$/, '')
+
+  const isProd =
+    process.env.VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production'
+
+  try {
+    const u = new URL(raw || 'https://srs.lat')
+    if (isProd && (u.hostname === 'localhost' || u.hostname === '127.0.0.1')) {
+      return 'https://srs.lat'
+    }
+    if (
+      u.hostname === 'srs.lat' ||
+      u.hostname.endsWith('.srs.lat') ||
+      (isProd && u.protocol === 'http:')
+    ) {
+      u.protocol = 'https:'
+    }
+    return u.origin
+  } catch {
+    return 'https://srs.lat'
+  }
+}
+
+export function normalizeHost(host: string) {
+  return String(host || '')
+    .split(',')[0]
+    .trim()
+    .toLowerCase()
+    .replace(/:\d+$/, '')
+    .replace(/^www\./, '')
+}
+
+export function isSameSiteHost(reqHost: string, siteHost: string) {
+  return normalizeHost(reqHost) === normalizeHost(siteHost)
 }
 
 export function getDiscordClientId() {

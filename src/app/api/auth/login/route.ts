@@ -8,6 +8,7 @@ import {
   getDiscordClientId,
   getOAuthRedirectUri,
   getSiteUrl,
+  isSameSiteHost,
   oauthStateCookieOptions,
   readAuthCookies,
 } from '@/lib/auth'
@@ -17,7 +18,7 @@ export async function GET(req: NextRequest) {
   const siteHost = new URL(site).host
   const reqHost = req.headers.get('x-forwarded-host') || req.nextUrl.host
 
-  if (reqHost !== siteHost) {
+  if (!isSameSiteHost(reqHost, siteHost)) {
     return NextResponse.redirect(`${site}/api/auth/login`)
   }
 
