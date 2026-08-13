@@ -1,4 +1,8 @@
-export const DOWNLOAD_URL = '/api/download'
+const CDN_BASE = (
+  process.env.NEXT_PUBLIC_SRS_CDN_URL ?? 'https://cdn.srs.lat/win'
+).replace(/\/$/, '')
+
+export const DOWNLOAD_URL = `${CDN_BASE}/SRS-Launcher.exe`
 export const DOWNLOAD_LABEL = 'Baixar instalador'
 
 export const QUICK_STEPS = [
