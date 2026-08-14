@@ -8,16 +8,16 @@ import {
   readAuthCookies,
   refreshCookieOptions,
   refreshWebSession,
+  safeNextPath,
 } from '@/lib/auth'
 
 export async function GET(req: NextRequest) {
   const site = getSiteUrl()
-  const next = req.nextUrl.searchParams.get('next') || '/dashboard'
-  const safeNext = next.startsWith('/') ? next : '/dashboard'
+  const next = safeNextPath(req.nextUrl.searchParams.get('next')) || '/dashboard'
   const { refreshToken } = await readAuthCookies()
 
   if (!refreshToken) {
-    return NextResponse.redirect(`${site}/login`)
+    return NextResponse.redirect(`${site}/login?next=${encodeURIComponent(next)}`)
   }
 
   const { res, data } = await refreshWebSession(refreshToken)
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     return out
   }
 
-  const out = NextResponse.redirect(`${site}${safeNext}`)
+  const out = NextResponse.redirect(`${site}${next}`)
   out.cookies.set(ACCESS_COOKIE, data.accessToken, accessCookieOptions(data.expiresIn || 900))
   if (data.refreshToken) {
     out.cookies.set(REFRESH_COOKIE, data.refreshToken, refreshCookieOptions())

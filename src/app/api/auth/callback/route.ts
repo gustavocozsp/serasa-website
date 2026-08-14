@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {
   ACCESS_COOKIE,
+  OAUTH_NEXT_COOKIE,
   OAUTH_STATE_COOKIE,
   REFRESH_COOKIE,
   accessCookieOptions,
@@ -9,6 +10,7 @@ import {
   getOAuthRedirectUri,
   getSiteUrl,
   refreshCookieOptions,
+  safeNextPath,
 } from '@/lib/auth'
 
 function fail(code: string) {
@@ -24,6 +26,7 @@ export async function GET(req: NextRequest) {
   const code = url.searchParams.get('code')
   const state = url.searchParams.get('state')
   const savedState = req.cookies.get(OAUTH_STATE_COOKIE)?.value
+  const next = safeNextPath(req.cookies.get(OAUTH_NEXT_COOKIE)?.value)
 
   if (!code || !state || !savedState || state !== savedState) {
     return fail('invalid_state')
@@ -48,17 +51,18 @@ export async function GET(req: NextRequest) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ discordAccessToken: exchange.accessToken }),
-    cache: 'no-store',
   })
   const login = await loginRes.json().catch(() => null)
 
   if (!loginRes.ok || !login?.accessToken || !login?.refreshToken) {
-    return fail(login?.code || 'not_authorized')
+    return fail(login?.code || 'access_denied')
   }
 
-  const res = NextResponse.redirect(`${site}/dashboard`)
+  const dest = next || (login.user?.hasAccess ? '/dashboard' : '/loja')
+  const res = NextResponse.redirect(`${site}${dest}`)
   res.cookies.set(ACCESS_COOKIE, login.accessToken, accessCookieOptions(login.expiresIn || 900))
   res.cookies.set(REFRESH_COOKIE, login.refreshToken, refreshCookieOptions())
   res.cookies.set(OAUTH_STATE_COOKIE, '', clearCookieOptions())
+  res.cookies.set(OAUTH_NEXT_COOKIE, '', clearCookieOptions())
   return res
 }

@@ -7,7 +7,7 @@ import {
   fetchWebMe,
 } from '@/lib/auth'
 
-export async function getDashboardUser(): Promise<PublicUser | null> {
+export async function getSessionUser(next = '/dashboard'): Promise<PublicUser | null> {
   const jar = await cookies()
   const accessToken = jar.get(ACCESS_COOKIE)?.value || ''
   const refreshToken = jar.get(REFRESH_COOKIE)?.value || ''
@@ -19,16 +19,17 @@ export async function getDashboardUser(): Promise<PublicUser | null> {
   }
 
   if (refreshToken) {
-    redirect('/api/auth/session?next=/dashboard')
+    const dest = next.startsWith('/') ? next : '/dashboard'
+    redirect(`/api/auth/session?next=${encodeURIComponent(dest)}`)
   }
 
   return null
 }
 
 export async function requireDashboardUser() {
-  const user = await getDashboardUser()
-  if (!user?.hasAccess) {
-    redirect('/login')
+  const user = await getSessionUser('/dashboard')
+  if (!user) {
+    redirect('/login?next=/dashboard')
   }
   return user
 }

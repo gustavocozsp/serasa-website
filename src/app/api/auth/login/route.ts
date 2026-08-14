@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {
   ACCESS_COOKIE,
+  OAUTH_NEXT_COOKIE,
   OAUTH_STATE_COOKIE,
   REFRESH_COOKIE,
   clearCookieOptions,
@@ -9,8 +10,10 @@ import {
   getOAuthRedirectUri,
   getSiteUrl,
   isSameSiteHost,
+  oauthNextCookieOptions,
   oauthStateCookieOptions,
   readAuthCookies,
+  safeNextPath,
 } from '@/lib/auth'
 
 export async function GET(req: NextRequest) {
@@ -22,12 +25,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(`${site}/api/auth/login`)
   }
 
+  const next = safeNextPath(req.nextUrl.searchParams.get('next'))
   const { accessToken } = await readAuthCookies()
 
   if (accessToken) {
-    const { res } = await fetchWebMe(accessToken)
-    if (res.ok) {
-      return NextResponse.redirect(`${site}/dashboard`)
+    const { res, data } = await fetchWebMe(accessToken)
+    if (res.ok && data?.user) {
+      const dest = next || (data.user.hasAccess ? '/dashboard' : '/loja')
+      return NextResponse.redirect(`${site}${dest}`)
     }
   }
 
@@ -51,6 +56,11 @@ export async function GET(req: NextRequest) {
   )
 
   res.cookies.set(OAUTH_STATE_COOKIE, state, oauthStateCookieOptions())
+  if (next) {
+    res.cookies.set(OAUTH_NEXT_COOKIE, next, oauthNextCookieOptions())
+  } else {
+    res.cookies.set(OAUTH_NEXT_COOKIE, '', clearCookieOptions())
+  }
   res.cookies.set(ACCESS_COOKIE, '', clearCookieOptions())
   res.cookies.set(REFRESH_COOKIE, '', clearCookieOptions())
 

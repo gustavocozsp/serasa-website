@@ -53,14 +53,12 @@ export default function LojaPage() {
               </ul>
 
               <div className="plan__action">
-                <a
-                  href={DISCORD_URL}
+                <Link
+                  href={`/loja/checkout?plan=${plan.id}`}
                   className={`btn btn--block${plan.featured ? ' btn--neon' : ''}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
                 >
                   Comprar
-                </a>
+                </Link>
               </div>
             </article>
           ))}
@@ -68,7 +66,7 @@ export default function LojaPage() {
 
         <div className="store-note">
           <p>
-            Após o pagamento, sua conta recebe o acesso automaticamente.
+            Após o pagamento PIX, o acesso cai na sua conta Discord automaticamente.
             Dúvidas?{' '}
             <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">
               Entre no servidor

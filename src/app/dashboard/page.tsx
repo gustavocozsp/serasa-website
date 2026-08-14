@@ -45,7 +45,7 @@ export default async function DashboardPage() {
 
           <div className="dash__top-actions">
             <Link href="/loja" className="btn btn--neon">
-              Renovar
+              {user.hasAccess ? 'Renovar' : 'Comprar'}
             </Link>
             <LogoutButton />
           </div>
@@ -87,14 +87,20 @@ export default async function DashboardPage() {
               <p>Instalador oficial</p>
             </div>
 
-            <a
-              href={DOWNLOAD_URL}
-              className="btn btn--neon btn--block dash__dl-btn"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {DOWNLOAD_LABEL}
-            </a>
+            {user.hasAccess ? (
+              <a
+                href={DOWNLOAD_URL}
+                className="btn btn--neon btn--block dash__dl-btn"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {DOWNLOAD_LABEL}
+              </a>
+            ) : (
+              <Link href="/loja" className="btn btn--neon btn--block dash__dl-btn">
+                Ativar licença
+              </Link>
+            )}
           </article>
 
           <article className="dash__box dash__box--guide">

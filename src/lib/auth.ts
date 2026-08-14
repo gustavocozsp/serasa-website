@@ -3,6 +3,7 @@ import { cookies } from 'next/headers'
 export const ACCESS_COOKIE = 'srs_web_access'
 export const REFRESH_COOKIE = 'srs_web_refresh'
 export const OAUTH_STATE_COOKIE = 'srs_oauth_state'
+export const OAUTH_NEXT_COOKIE = 'srs_oauth_next'
 
 export type PublicUser = {
   discordId: string
@@ -143,6 +144,27 @@ export function oauthStateCookieOptions(maxAge = 10 * 60) {
     ...baseCookieOptions(),
     maxAge,
   }
+}
+
+export function oauthNextCookieOptions(maxAge = 10 * 60) {
+  return {
+    ...baseCookieOptions(),
+    maxAge,
+  }
+}
+
+export function safeNextPath(raw: string | null | undefined) {
+  if (!raw) return null
+  let value = String(raw).trim()
+  try {
+    value = decodeURIComponent(value)
+  } catch {}
+  if (!value.startsWith('/')) return null
+  if (value.startsWith('//')) return null
+  if (value.includes('://')) return null
+  if (value.length > 180) return null
+  if (!/^\/[a-zA-Z0-9/?=&._\-]*$/.test(value)) return null
+  return value
 }
 
 export function clearCookieOptions() {
