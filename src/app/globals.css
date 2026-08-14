@@ -4070,17 +4070,18 @@ body {
 .pay-desk__qr {
   display: grid;
   place-items: center;
-  width: fit-content;
+  width: 200px;
+  height: 200px;
   margin: 0 auto 22px;
-  padding: 12px;
-  background: #fff;
-  box-shadow: 0 0 0 1px rgba(190, 175, 220, 0.2);
+  overflow: hidden;
 }
 
 .pay-desk__qr img {
   display: block;
-  width: 228px;
-  height: 228px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  transform: scale(1.18);
 }
 
 .pay-desk__copia {
@@ -4089,39 +4090,17 @@ body {
   margin-top: 4px;
 }
 
-.pay-desk__codewrap {
-  position: relative;
-}
-
 .pay-desk__code {
   margin: 0;
-  padding: 12px 14px 44px;
+  padding: 12px 14px;
   font-size: 12px;
   line-height: 1.45;
   color: var(--text-mute);
   word-break: break-all;
   background: rgba(8, 6, 14, 0.4);
   box-shadow: inset 0 0 0 1px rgba(140, 120, 170, 0.18);
-  max-height: 110px;
+  max-height: 76px;
   overflow: hidden;
-}
-
-.pay-desk__copy {
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
-  padding: 7px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--white);
-  background: rgba(88, 48, 140, 0.92);
-  box-shadow: inset 0 0 0 1px rgba(180, 150, 220, 0.35);
-}
-
-.pay-desk__copy:hover {
-  background: rgba(110, 62, 170, 0.98);
 }
 
 .pay-desk__wait {
@@ -4152,9 +4131,10 @@ body {
     box-shadow: inset 0 1px 0 rgba(160, 130, 200, 0.16);
   }
 
+  .pay-desk__qr,
   .pay-desk__qr img {
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
   }
 
   .pay-desk__copy {

@@ -419,18 +419,16 @@ export function CheckoutClient({
                 ) : null}
 
                 <div className="pay-desk__copia">
-                  <div className="pay-desk__codewrap">
-                    <p className="pay-desk__code" title={payment.brCode}>
-                      {payment.brCode}
-                    </p>
-                    <button
-                      type="button"
-                      className="pay-desk__copy"
-                      onClick={() => void copyCode()}
-                    >
-                      {copied ? 'Copiado' : 'Copiar'}
-                    </button>
-                  </div>
+                  <p className="pay-desk__code" title={payment.brCode}>
+                    {payment.brCode}
+                  </p>
+                  <button
+                    type="button"
+                    className="btn btn--block"
+                    onClick={() => void copyCode()}
+                  >
+                    {copied ? 'Copiado' : 'Copiar código PIX'}
+                  </button>
                 </div>
                 <p className="pay-desk__wait">Confirmando pagamento…</p>
                 {error ? <p className="pay-desk__error">{error}</p> : null}
