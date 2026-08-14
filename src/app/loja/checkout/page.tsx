@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { PLANS } from '@/data/site'
+import { discordAvatarUrl } from '@/lib/auth'
 import { getSessionUser } from '@/lib/session'
 import { CheckoutClient } from './CheckoutClient'
 
@@ -27,7 +28,15 @@ export default async function CheckoutPage({
   return (
     <CheckoutClient
       plan={plan}
-      user={user}
+      user={
+        user
+          ? {
+              username: user.username,
+              displayName: user.displayName || user.username,
+              avatarUrl: discordAvatarUrl(user),
+            }
+          : null
+      }
       loginHref={`/api/auth/login?next=${encodeURIComponent(next)}`}
     />
   )

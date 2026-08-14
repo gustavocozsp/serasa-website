@@ -10,6 +10,12 @@ const PLAN_LABELS: Record<string, string> = {
   year: 'Anual',
 }
 
+type CheckoutUser = {
+  username: string
+  displayName: string
+  avatarUrl: string
+}
+
 type PlanView = {
   id: string
   name: string
@@ -41,6 +47,22 @@ function formatRemain(ms: number) {
   return `${m}:${String(s).padStart(2, '0')}`
 }
 
+function PixLogo() {
+  return (
+    <svg
+      className="pay-desk__pix-logo"
+      viewBox="0 0 24 24"
+      aria-hidden
+      focusable="false"
+    >
+      <path
+        fill="#32BCAD"
+        d="M5.283 18.36a3.547 3.547 0 0 0 2.504-1.038l1.962-1.96a.78.78 0 0 0 0-1.107.786.786 0 0 0-1.107 0l-1.962 1.96a1.984 1.984 0 0 1-2.81 0 1.984 1.984 0 0 1 0-2.81l3.925-3.926a1.984 1.984 0 0 1 2.81 0 .786.786 0 0 0 1.107 0 .78.78 0 0 0 0-1.107 3.547 3.547 0 0 0-5.024 0L2.26 11.33a3.555 3.555 0 0 0 0 5.023 3.547 3.547 0 0 0 3.023 1.007zm13.434-12.72a3.547 3.547 0 0 0-2.504 1.038l-1.962 1.96a.78.78 0 0 0 0 1.107.786.786 0 0 0 1.107 0l1.962-1.96a1.984 1.984 0 0 1 2.81 0 1.984 1.984 0 0 1 0 2.81l-3.925 3.926a1.984 1.984 0 0 1-2.81 0 .786.786 0 0 0-1.107 0 .78.78 0 0 0 0 1.107 3.547 3.547 0 0 0 5.024 0L21.74 12.67a3.555 3.555 0 0 0 0-5.023 3.547 3.547 0 0 0-3.023-1.007zM8.47 8.47a.786.786 0 0 0 1.107 0 .78.78 0 0 0 0-1.107L7.615 5.4a3.555 3.555 0 0 0-5.023 0 .786.786 0 1 0 1.107 1.107 1.984 1.984 0 0 1 2.81 0L8.47 8.47zm7.06 7.06a.786.786 0 0 0-1.107 0 .78.78 0 0 0 0 1.107l1.962 1.962a3.555 3.555 0 0 0 5.023 0 .786.786 0 1 0-1.107-1.107 1.984 1.984 0 0 1-2.81 0L15.53 15.53z"
+      />
+    </svg>
+  )
+}
+
 function DeskBar({ left, right }: { left: string; right: string }) {
   return (
     <header className="pay-desk__bar">
@@ -57,7 +79,7 @@ export function CheckoutClient({
   loginHref,
 }: {
   plan: PlanView
-  user: { username: string } | null
+  user: CheckoutUser | null
   loginHref: string
 }) {
   const [coupon, setCoupon] = useState('')
@@ -237,19 +259,34 @@ export function CheckoutClient({
                 <li key={perk}>{perk}</li>
               ))}
             </ul>
-            <p className="pay-desk__account">
-              Conta <strong>@{user.username}</strong>
-            </p>
+            <div className="pay-desk__who">
+              <img
+                className="pay-desk__who-avatar"
+                src={user.avatarUrl}
+                alt=""
+                width={48}
+                height={48}
+                referrerPolicy="no-referrer"
+              />
+              <div className="pay-desk__who-id">
+                <strong>{user.displayName}</strong>
+                <span>@{user.username}</span>
+              </div>
+              <p className="pay-desk__who-hint">
+                Você está adquirindo a licença para essa conta
+              </p>
+            </div>
           </div>
 
           <div className="pay-desk__col pay-desk__col--action">
             {!payment || expired ? (
               <>
                 <p className="pay-desk__kicker">Pagamento</p>
-                <h2 className="pay-desk__title pay-desk__title--sm">PIX</h2>
-                <p className="pay-desk__copy">
-                  QR válido por 60 minutos. A licença libera sozinha após a confirmação.
-                </p>
+                <h2 className="pay-desk__title pay-desk__title--sm pay-desk__pix">
+                  <PixLogo />
+                  PIX
+                </h2>
+                <p className="pay-desk__copy">Pagamento instantâneo via PIX.</p>
 
                 {couponOpen || coupon ? (
                   <label className="pay-desk__coupon">
@@ -260,16 +297,16 @@ export function CheckoutClient({
                       maxLength={32}
                       autoComplete="off"
                       spellCheck={false}
-                      placeholder="Opcional"
+                      placeholder="Código"
                     />
                   </label>
                 ) : (
                   <button
                     type="button"
-                    className="pay-desk__link pay-desk__link--left"
+                    className="pay-desk__coupon-btn"
                     onClick={() => setCouponOpen(true)}
                   >
-                    Tenho um cupom
+                    Tenho cupom
                   </button>
                 )}
 
@@ -290,7 +327,10 @@ export function CheckoutClient({
             ) : (
               <>
                 <p className="pay-desk__kicker">PIX gerado</p>
-                <h2 className="pay-desk__title pay-desk__title--sm">Escaneie o QR</h2>
+                <h2 className="pay-desk__title pay-desk__title--sm pay-desk__pix">
+                  <PixLogo />
+                  PIX
+                </h2>
                 <p className="pay-desk__timer" aria-live="polite">
                   Expira em {formatRemain(remainMs)}
                 </p>

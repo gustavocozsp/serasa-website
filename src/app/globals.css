@@ -3817,20 +3817,103 @@ body {
   color: var(--text-mute);
 }
 
-.pay-desk__note,
-.pay-desk__account {
+.pay-desk__note {
   margin: 0 0 18px;
   font-size: 13px;
   color: var(--text-mute);
 }
 
-.pay-desk__account {
-  margin: 18px 0 0;
+.pay-desk__who {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  row-gap: 12px;
+  align-items: center;
+  margin-top: 28px;
+  padding: 14px 14px 16px;
+  background: rgba(8, 6, 14, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(160, 130, 200, 0.2);
 }
 
-.pay-desk__account strong {
-  color: var(--text);
-  font-weight: 600;
+.pay-desk__who-avatar {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  background: rgba(20, 14, 32, 0.8);
+}
+
+.pay-desk__who-id {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pay-desk__who-id strong {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pay-desk__who-id span {
+  font-size: 12.5px;
+  color: var(--text-mute);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pay-desk__who-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: 12px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: var(--text-dim);
+  box-shadow: inset 0 1px 0 rgba(160, 130, 200, 0.16);
+}
+
+.pay-desk__pix {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pay-desk__pix-logo {
+  width: 1.05em;
+  height: 1.05em;
+  flex-shrink: 0;
+}
+
+.pay-desk__coupon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 18px;
+  padding: 10px 16px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(140, 120, 170, 0.4);
+  clip-path: var(--clip-btn);
+}
+
+.pay-desk__coupon-btn:hover {
+  background: rgba(139, 107, 184, 0.14);
 }
 
 .pay-desk__perks {
