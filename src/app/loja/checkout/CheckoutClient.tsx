@@ -49,17 +49,13 @@ function formatRemain(ms: number) {
 
 function PixLogo() {
   return (
-    <svg
+    <img
       className="pay-desk__pix-logo"
-      viewBox="0 0 24 24"
-      aria-hidden
-      focusable="false"
-    >
-      <path
-        fill="#32BCAD"
-        d="M5.283 18.36a3.547 3.547 0 0 0 2.504-1.038l1.962-1.96a.78.78 0 0 0 0-1.107.786.786 0 0 0-1.107 0l-1.962 1.96a1.984 1.984 0 0 1-2.81 0 1.984 1.984 0 0 1 0-2.81l3.925-3.926a1.984 1.984 0 0 1 2.81 0 .786.786 0 0 0 1.107 0 .78.78 0 0 0 0-1.107 3.547 3.547 0 0 0-5.024 0L2.26 11.33a3.555 3.555 0 0 0 0 5.023 3.547 3.547 0 0 0 3.023 1.007zm13.434-12.72a3.547 3.547 0 0 0-2.504 1.038l-1.962 1.96a.78.78 0 0 0 0 1.107.786.786 0 0 0 1.107 0l1.962-1.96a1.984 1.984 0 0 1 2.81 0 1.984 1.984 0 0 1 0 2.81l-3.925 3.926a1.984 1.984 0 0 1-2.81 0 .786.786 0 0 0-1.107 0 .78.78 0 0 0 0 1.107 3.547 3.547 0 0 0 5.024 0L21.74 12.67a3.555 3.555 0 0 0 0-5.023 3.547 3.547 0 0 0-3.023-1.007zM8.47 8.47a.786.786 0 0 0 1.107 0 .78.78 0 0 0 0-1.107L7.615 5.4a3.555 3.555 0 0 0-5.023 0 .786.786 0 1 0 1.107 1.107 1.984 1.984 0 0 1 2.81 0L8.47 8.47zm7.06 7.06a.786.786 0 0 0-1.107 0 .78.78 0 0 0 0 1.107l1.962 1.962a3.555 3.555 0 0 0 5.023 0 .786.786 0 1 0-1.107-1.107 1.984 1.984 0 0 1-2.81 0L15.53 15.53z"
-      />
-    </svg>
+      src="/images/pix.png"
+      alt=""
+      width={32}
+      height={32}
+    />
   )
 }
 
@@ -84,7 +80,15 @@ export function CheckoutClient({
 }) {
   const [coupon, setCoupon] = useState('')
   const [couponOpen, setCouponOpen] = useState(false)
+  const [applied, setApplied] = useState<{
+    code: string
+    amountLabel: string
+    originalAmountLabel: string
+    amountCents: number
+    originalAmountCents: number
+  } | null>(null)
   const [busy, setBusy] = useState(false)
+  const [couponBusy, setCouponBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [payment, setPayment] = useState<PaymentView | null>(null)
@@ -100,14 +104,29 @@ export function CheckoutClient({
     payment != null && !paid && (payment.status === 'expired' || remainMs <= 0)
 
   const priceNote = useMemo(() => {
-    if (!payment) return null
-    if (payment.coupon && payment.originalAmountCents > payment.amountCents) {
-      return `Cupom ${payment.coupon}`
+    const code = payment?.coupon || applied?.code
+    const original = payment?.originalAmountCents ?? applied?.originalAmountCents
+    const amount = payment?.amountCents ?? applied?.amountCents
+    if (code && original != null && amount != null && original > amount) {
+      return `Cupom ${code}`
     }
     return null
-  }, [payment])
+  }, [payment, applied])
 
-  const displayPrice = payment?.amountLabel?.replace(/^R\$\s*/, '').trim() || plan.price
+  const displayPrice =
+    payment?.amountLabel?.replace(/^R\$\s*/, '').trim() ||
+    applied?.amountLabel.replace(/^R\$\s*/, '').trim() ||
+    plan.price
+
+  const originalPrice = (() => {
+    const original = payment?.originalAmountCents ?? applied?.originalAmountCents
+    const amount = payment?.amountCents ?? applied?.amountCents
+    if (original == null || amount == null || original <= amount) return null
+    if (applied && applied.originalAmountCents === original) {
+      return applied.originalAmountLabel.replace(/^R\$\s*/, '').trim()
+    }
+    return (original / 100).toFixed(2).replace('.', ',')
+  })()
 
   const stopPoll = useCallback(() => {
     if (pollRef.current != null) {
@@ -158,7 +177,7 @@ export function CheckoutClient({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           planId: plan.id,
-          coupon: coupon.trim() || undefined,
+          coupon: applied?.code || coupon.trim() || undefined,
         }),
       })
       const data = await res.json().catch(() => null)
@@ -171,6 +190,40 @@ export function CheckoutClient({
       setError(err instanceof Error ? err.message : 'Falha ao gerar o PIX.')
     } finally {
       setBusy(false)
+    }
+  }
+
+  async function applyCoupon() {
+    const code = coupon.trim()
+    if (!code) {
+      setError('Informe um cupom.')
+      return
+    }
+    setCouponBusy(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/checkout/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ planId: plan.id, coupon: code }),
+      })
+      const data = await res.json().catch(() => null)
+      if (!res.ok || !data?.quote) {
+        throw new Error(data?.error || 'Cupom inválido.')
+      }
+      setApplied({
+        code: data.quote.coupon,
+        amountLabel: data.quote.amountLabel,
+        originalAmountLabel: data.quote.originalAmountLabel,
+        amountCents: data.quote.amountCents,
+        originalAmountCents: data.quote.originalAmountCents,
+      })
+      setCoupon(data.quote.coupon)
+      setCouponOpen(false)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Cupom inválido.')
+    } finally {
+      setCouponBusy(false)
     }
   }
 
@@ -252,6 +305,7 @@ export function CheckoutClient({
             <div className="pay-desk__price">
               <span>R$</span>
               <strong>{displayPrice}</strong>
+              {originalPrice ? <s className="pay-desk__was">{originalPrice}</s> : null}
             </div>
             {priceNote ? <p className="pay-desk__note">{priceNote}</p> : null}
             <ul className="pay-desk__perks">
@@ -288,18 +342,41 @@ export function CheckoutClient({
                 </h2>
                 <p className="pay-desk__copy">Pagamento instantâneo via PIX.</p>
 
-                {couponOpen || coupon ? (
-                  <label className="pay-desk__coupon">
+                {applied && !couponOpen ? (
+                  <div className="pay-desk__applied">
+                    <span>Cupom {applied.code}</span>
+                    <button type="button" onClick={() => setCouponOpen(true)}>
+                      Trocar
+                    </button>
+                  </div>
+                ) : couponOpen ? (
+                  <div className="pay-desk__coupon">
                     <span>Cupom</span>
-                    <input
-                      value={coupon}
-                      onChange={(e) => setCoupon(e.target.value.toUpperCase())}
-                      maxLength={32}
-                      autoComplete="off"
-                      spellCheck={false}
-                      placeholder="Código"
-                    />
-                  </label>
+                    <div className="pay-desk__coupon-row">
+                      <input
+                        value={coupon}
+                        onChange={(e) => setCoupon(e.target.value.toUpperCase())}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault()
+                            void applyCoupon()
+                          }
+                        }}
+                        maxLength={32}
+                        autoComplete="off"
+                        spellCheck={false}
+                        placeholder="Código"
+                      />
+                      <button
+                        type="button"
+                        className="btn btn--neon"
+                        disabled={couponBusy}
+                        onClick={() => void applyCoupon()}
+                      >
+                        {couponBusy ? '…' : 'Aplicar'}
+                      </button>
+                    </div>
+                  </div>
                 ) : (
                   <button
                     type="button"
@@ -341,17 +418,20 @@ export function CheckoutClient({
                   </div>
                 ) : null}
 
-                <button
-                  type="button"
-                  className="btn btn--lg btn--block"
-                  onClick={() => void copyCode()}
-                >
-                  {copied ? 'Copiado' : 'Copiar código PIX'}
-                </button>
-
-                <p className="pay-desk__code" title={payment.brCode}>
-                  {payment.brCode}
-                </p>
+                <div className="pay-desk__copia">
+                  <div className="pay-desk__codewrap">
+                    <p className="pay-desk__code" title={payment.brCode}>
+                      {payment.brCode}
+                    </p>
+                    <button
+                      type="button"
+                      className="pay-desk__copy"
+                      onClick={() => void copyCode()}
+                    >
+                      {copied ? 'Copiado' : 'Copiar'}
+                    </button>
+                  </div>
+                </div>
                 <p className="pay-desk__wait">Confirmando pagamento…</p>
                 {error ? <p className="pay-desk__error">{error}</p> : null}
               </>
