@@ -2,8 +2,13 @@
 
 import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { PublicUser } from '@/lib/auth'
-import { PLAN_LABELS } from '@/lib/auth'
+
+const PLAN_LABELS: Record<string, string> = {
+  week: 'Semanal',
+  month: 'Mensal',
+  quarter: 'Trimestral',
+  year: 'Anual',
+}
 
 type PlanView = {
   id: string
@@ -42,7 +47,7 @@ export function CheckoutClient({
   loginHref,
 }: {
   plan: PlanView
-  user: PublicUser | null
+  user: { username: string } | null
   loginHref: string
 }) {
   const [coupon, setCoupon] = useState('')
