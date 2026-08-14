@@ -25,14 +25,10 @@ export default async function CheckoutPage({
   const user = await getSessionUser(next)
 
   return (
-    <section className="section">
-      <div className="container">
-        <CheckoutClient
-          plan={plan}
-          user={user}
-          loginHref={`/api/auth/login?next=${encodeURIComponent(next)}`}
-        />
-      </div>
-    </section>
+    <CheckoutClient
+      plan={plan}
+      user={user}
+      loginHref={`/api/auth/login?next=${encodeURIComponent(next)}`}
+    />
   )
 }

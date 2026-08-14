@@ -41,6 +41,16 @@ function formatRemain(ms: number) {
   return `${m}:${String(s).padStart(2, '0')}`
 }
 
+function DeskBar({ left, right }: { left: string; right: string }) {
+  return (
+    <header className="pay-desk__bar">
+      <span>{left}</span>
+      <i aria-hidden />
+      <span>{right}</span>
+    </header>
+  )
+}
+
 export function CheckoutClient({
   plan,
   user,
@@ -69,14 +79,13 @@ export function CheckoutClient({
 
   const priceNote = useMemo(() => {
     if (!payment) return null
-    if (
-      payment.coupon &&
-      payment.originalAmountCents > payment.amountCents
-    ) {
+    if (payment.coupon && payment.originalAmountCents > payment.amountCents) {
       return `Cupom ${payment.coupon}`
     }
     return null
   }, [payment])
+
+  const displayPrice = payment?.amountLabel?.replace(/^R\$\s*/, '').trim() || plan.price
 
   const stopPoll = useCallback(() => {
     if (pollRef.current != null) {
@@ -85,18 +94,21 @@ export function CheckoutClient({
     }
   }, [])
 
-  const pollOnce = useCallback(async (pixId: string) => {
-    const res = await fetch(`/api/checkout/pix/${encodeURIComponent(pixId)}`, {
-      cache: 'no-store',
-    })
-    const data = await res.json().catch(() => null)
-    if (res.ok && data?.payment) {
-      setPayment(data.payment as PaymentView)
-      if (data.payment.status === 'paid' || data.payment.granted) {
-        stopPoll()
+  const pollOnce = useCallback(
+    async (pixId: string) => {
+      const res = await fetch(`/api/checkout/pix/${encodeURIComponent(pixId)}`, {
+        cache: 'no-store',
+      })
+      const data = await res.json().catch(() => null)
+      if (res.ok && data?.payment) {
+        setPayment(data.payment as PaymentView)
+        if (data.payment.status === 'paid' || data.payment.granted) {
+          stopPoll()
+        }
       }
-    }
-  }, [stopPoll])
+    },
+    [stopPoll],
+  )
 
   useEffect(() => {
     if (!waiting || !payment?.pixId) return
@@ -154,146 +166,159 @@ export function CheckoutClient({
 
   if (!user) {
     return (
-      <div className="pay">
-        <div className="pay__card pay__card--narrow">
-          <p className="section__eyebrow">Checkout</p>
-          <h1 className="pay__title">{plan.name}</h1>
-          <p className="pay__lead">
-            Entre com Discord para gerar o PIX. O acesso cai na mesma conta.
-          </p>
-          <div className="pay__price-row">
-            <span>R$</span>
-            <strong>{plan.price}</strong>
+      <div className="pay-page">
+        <article className="pay-desk pay-desk--solo">
+          <DeskBar left="Checkout" right="Passo 1 de 2" />
+          <div className="pay-desk__body">
+            <p className="pay-desk__kicker">Licença {plan.name}</p>
+            <h1 className="pay-desk__title">{plan.name}</h1>
+            <p className="pay-desk__copy">
+              Entre com Discord para gerar o PIX. O acesso cai na mesma conta.
+            </p>
+            <div className="pay-desk__price">
+              <span>R$</span>
+              <strong>{plan.price}</strong>
+              <em>{plan.duration}</em>
+            </div>
+            <a href={loginHref} className="btn btn--neon btn--lg btn--block">
+              Continuar com Discord
+            </a>
+            <Link href="/loja" className="pay-desk__link">
+              Voltar aos planos
+            </Link>
           </div>
-          <a href={loginHref} className="btn btn--neon btn--block">
-            Continuar com Discord
-          </a>
-          <Link href="/loja" className="pay__back">
-            Voltar aos planos
-          </Link>
-        </div>
+        </article>
       </div>
     )
   }
 
   if (paid) {
     return (
-      <div className="pay">
-        <div className="pay__card pay__card--narrow pay__card--ok">
-          <p className="section__eyebrow">Pago</p>
-          <h1 className="pay__title">Acesso liberado</h1>
-          <p className="pay__lead">
-            {PLAN_LABELS[plan.id] || plan.name} ativo em @{user.username}.
-            Baixe o launcher no painel.
-          </p>
-          <div className="pay__actions">
-            <Link href="/dashboard" className="btn btn--neon btn--block">
-              Ir ao painel
-            </Link>
-            <Link href="/loja" className="btn btn--ghost btn--block">
-              Ver planos
-            </Link>
+      <div className="pay-page">
+        <article className="pay-desk pay-desk--solo">
+          <DeskBar left="Checkout" right="Concluído" />
+          <div className="pay-desk__body">
+            <p className="pay-desk__kicker">Pagamento confirmado</p>
+            <h1 className="pay-desk__title">Acesso liberado</h1>
+            <p className="pay-desk__copy">
+              {PLAN_LABELS[plan.id] || plan.name} ativo em @{user.username}.
+              Baixe o launcher no painel.
+            </p>
+            <div className="pay-desk__stack">
+              <Link href="/dashboard" className="btn btn--neon btn--lg btn--block">
+                Ir ao painel
+              </Link>
+              <Link href="/loja" className="btn btn--ghost btn--lg btn--block">
+                Ver planos
+              </Link>
+            </div>
           </div>
-        </div>
+        </article>
       </div>
     )
   }
 
   return (
-    <div className="pay">
-      <div className="pay__grid">
-        <aside className="pay__card pay__summary">
-          <p className="section__eyebrow">Plano</p>
-          <h1 className="pay__title">{plan.name}</h1>
-          <p className="pay__meta">{plan.duration}</p>
-          <div className="pay__price-row">
-            <span>R$</span>
-            <strong>{payment?.amountLabel?.replace('R$', '').trim() || plan.price}</strong>
+    <div className="pay-page">
+      <article className="pay-desk">
+        <DeskBar left="Checkout" right={waiting ? 'Aguardando PIX' : 'Passo 2 de 2'} />
+        <div className="pay-desk__split">
+          <div className="pay-desk__col">
+            <p className="pay-desk__kicker">Pedido</p>
+            <h1 className="pay-desk__title">{plan.name}</h1>
+            <p className="pay-desk__meta">{plan.duration}</p>
+            <div className="pay-desk__price">
+              <span>R$</span>
+              <strong>{displayPrice}</strong>
+            </div>
+            {priceNote ? <p className="pay-desk__note">{priceNote}</p> : null}
+            <ul className="pay-desk__perks">
+              {plan.perks.map((perk) => (
+                <li key={perk}>{perk}</li>
+              ))}
+            </ul>
+            <p className="pay-desk__account">
+              Conta <strong>@{user.username}</strong>
+            </p>
           </div>
-          {priceNote ? <p className="pay__coupon-note">{priceNote}</p> : null}
-          <ul className="plan__list">
-            {plan.perks.map((perk) => (
-              <li key={perk}>{perk}</li>
-            ))}
-          </ul>
-          <p className="pay__account">
-            Conta · <strong>@{user.username}</strong>
-          </p>
-        </aside>
 
-        <section className="pay__card pay__stage">
-          {!payment || expired ? (
-            <>
-              <p className="section__eyebrow">PIX</p>
-              <h2 className="pay__stage-title">Pagamento instantâneo</h2>
-              <p className="pay__lead">
-                O QR expira em 60 minutos. A licença libera sozinha após a confirmação.
-              </p>
+          <div className="pay-desk__col pay-desk__col--action">
+            {!payment || expired ? (
+              <>
+                <p className="pay-desk__kicker">Pagamento</p>
+                <h2 className="pay-desk__title pay-desk__title--sm">PIX</h2>
+                <p className="pay-desk__copy">
+                  QR válido por 60 minutos. A licença libera sozinha após a confirmação.
+                </p>
 
-              {couponOpen || coupon ? (
-                <label className="pay__coupon">
-                  <span>Cupom</span>
-                  <input
-                    value={coupon}
-                    onChange={(e) => setCoupon(e.target.value.toUpperCase())}
-                    maxLength={32}
-                    autoComplete="off"
-                    spellCheck={false}
-                    placeholder="Opcional"
-                  />
-                </label>
-              ) : (
+                {couponOpen || coupon ? (
+                  <label className="pay-desk__coupon">
+                    <span>Cupom</span>
+                    <input
+                      value={coupon}
+                      onChange={(e) => setCoupon(e.target.value.toUpperCase())}
+                      maxLength={32}
+                      autoComplete="off"
+                      spellCheck={false}
+                      placeholder="Opcional"
+                    />
+                  </label>
+                ) : (
+                  <button
+                    type="button"
+                    className="pay-desk__link pay-desk__link--left"
+                    onClick={() => setCouponOpen(true)}
+                  >
+                    Tenho um cupom
+                  </button>
+                )}
+
+                {error ? <p className="pay-desk__error">{error}</p> : null}
+
                 <button
                   type="button"
-                  className="pay__coupon-toggle"
-                  onClick={() => setCouponOpen(true)}
+                  className="btn btn--neon btn--lg btn--block"
+                  disabled={busy}
+                  onClick={() => void generatePix()}
                 >
-                  Tenho um cupom
+                  {busy ? 'Gerando…' : expired ? 'Gerar novo PIX' : 'Gerar PIX'}
                 </button>
-              )}
+                <Link href="/loja" className="pay-desk__link">
+                  Escolher outro plano
+                </Link>
+              </>
+            ) : (
+              <>
+                <p className="pay-desk__kicker">PIX gerado</p>
+                <h2 className="pay-desk__title pay-desk__title--sm">Escaneie o QR</h2>
+                <p className="pay-desk__timer" aria-live="polite">
+                  Expira em {formatRemain(remainMs)}
+                </p>
 
-              {error ? <p className="pay__error">{error}</p> : null}
+                {payment.qrImage ? (
+                  <div className="pay-desk__qr">
+                    <img src={payment.qrImage} alt="QR Code PIX" width={228} height={228} />
+                  </div>
+                ) : null}
 
-              <button
-                type="button"
-                className="btn btn--neon btn--block"
-                disabled={busy}
-                onClick={() => void generatePix()}
-              >
-                {busy ? 'Gerando…' : expired ? 'Gerar novo PIX' : 'Gerar PIX'}
-              </button>
-              <Link href="/loja" className="pay__back">
-                Escolher outro plano
-              </Link>
-            </>
-          ) : (
-            <>
-              <p className="section__eyebrow">Aguardando</p>
-              <h2 className="pay__stage-title">Escaneie o QR</h2>
-              <p className="pay__timer" aria-live="polite">
-                Expira em {formatRemain(remainMs)}
-              </p>
+                <button
+                  type="button"
+                  className="btn btn--lg btn--block"
+                  onClick={() => void copyCode()}
+                >
+                  {copied ? 'Copiado' : 'Copiar código PIX'}
+                </button>
 
-              {payment.qrImage ? (
-                <div className="pay__qr">
-                  <img src={payment.qrImage} alt="QR Code PIX" width={196} height={196} />
-                </div>
-              ) : null}
-
-              <button type="button" className="btn btn--block" onClick={() => void copyCode()}>
-                {copied ? 'Copiado' : 'Copiar código PIX'}
-              </button>
-
-              <p className="pay__code" title={payment.brCode}>
-                {payment.brCode}
-              </p>
-
-              <p className="pay__wait">Confirmando pagamento…</p>
-              {error ? <p className="pay__error">{error}</p> : null}
-            </>
-          )}
-        </section>
-      </div>
+                <p className="pay-desk__code" title={payment.brCode}>
+                  {payment.brCode}
+                </p>
+                <p className="pay-desk__wait">Confirmando pagamento…</p>
+                {error ? <p className="pay-desk__error">{error}</p> : null}
+              </>
+            )}
+          </div>
+        </div>
+      </article>
     </div>
   )
 }

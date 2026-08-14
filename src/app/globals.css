@@ -1,4 +1,4 @@
-@font-face {
+﻿@font-face {
   font-family: 'Nitro Break';
   src: url('/fonts/NitroBreak.otf') format('opentype');
   font-weight: 400;
@@ -382,6 +382,12 @@ svg {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.shell > main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
@@ -3110,7 +3116,8 @@ body {
 
 
 .login-page {
-  min-height: calc(100vh - 120px);
+  flex: 1 1 auto;
+  min-height: 0;
   display: grid;
   place-items: center;
   padding: 120px 20px 80px;
@@ -3631,139 +3638,260 @@ body {
   line-height: 1.5;
 }
 
-.pay {
-  width: min(100%, 860px);
-  margin: 8px auto 0;
+.pay-page {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 118px 22px 56px;
+  box-sizing: border-box;
 }
 
-.pay__grid {
-  display: grid;
-  grid-template-columns: 0.92fr 1.08fr;
-  gap: 16px;
-  align-items: stretch;
-}
-
-.pay__card {
+.pay-desk {
   position: relative;
-  padding: 28px 24px 24px;
-  background: var(--panel-strong);
+  width: min(100%, 980px);
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(139, 107, 184, 0.1) 24%,
+      rgba(18, 12, 28, 0.94) 58%,
+      rgba(8, 6, 16, 0.98) 100%
+    );
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    inset 0 0 0 1px rgba(190, 175, 220, 0.16),
-    var(--glow);
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 0 0 1px rgba(190, 170, 230, 0.22),
+    0 28px 80px rgba(0, 0, 0, 0.45),
+    0 0 60px rgba(90, 60, 140, 0.16);
   clip-path: polygon(
-    16px 0,
+    22px 0,
     100% 0,
-    100% calc(100% - 16px),
-    calc(100% - 16px) 100%,
+    100% calc(100% - 22px),
+    calc(100% - 22px) 100%,
     0 100%,
-    0 16px
+    0 22px
   );
 }
 
-.pay__card--narrow {
-  width: min(100%, 440px);
-  margin-inline: auto;
+.pay-desk::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 16%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5) 40%,
+    rgba(200, 180, 240, 0.2) 70%,
+    transparent
+  );
 }
 
-.pay__card--ok {
-  text-align: left;
+.pay-desk--solo {
+  width: min(100%, 520px);
 }
 
-.pay__title {
-  margin: 6px 0 8px;
-  font-family: var(--font-display);
-  font-size: clamp(1.45rem, 3vw, 1.85rem);
+.pay-desk__bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 28px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--white);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--neon);
+  background: rgba(8, 6, 14, 0.35);
+  box-shadow: inset 0 -1px 0 rgba(160, 130, 200, 0.18);
 }
 
-.pay__stage-title {
-  margin: 6px 0 8px;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+.pay-desk__bar span:last-child {
+  margin-left: auto;
+  color: var(--text-mute);
   font-weight: 650;
+}
+
+.pay-desk__bar i {
+  width: 5px;
+  height: 5px;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  background: var(--neon);
+  box-shadow: 0 0 10px rgba(139, 107, 184, 0.55);
+}
+
+.pay-desk__body {
+  position: relative;
+  z-index: 1;
+  padding: 36px 36px 32px;
+}
+
+.pay-desk__split {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.pay-desk__col {
+  padding: 36px 32px 32px;
+}
+
+.pay-desk__col--action {
+  background: rgba(6, 4, 12, 0.28);
+  box-shadow: inset 1px 0 0 rgba(160, 130, 200, 0.16);
+}
+
+.pay-desk__kicker {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--neon);
+}
+
+.pay-desk__title {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.7rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
   color: var(--white);
 }
 
-.pay__lead,
-.pay__meta {
-  margin: 0 0 18px;
+.pay-desk__title--sm {
+  font-size: clamp(1.55rem, 3vw, 2rem);
+}
+
+.pay-desk__copy,
+.pay-desk__meta {
+  margin: 0 0 22px;
+  max-width: 34ch;
   color: var(--text-dim);
-  font-size: 0.92rem;
+  font-size: 0.98rem;
   line-height: 1.55;
 }
 
-.pay__meta {
+.pay-desk__meta {
   margin-top: -4px;
-  margin-bottom: 12px;
-  font-size: 12.5px;
+  margin-bottom: 18px;
+  font-size: 13.5px;
   color: var(--text-mute);
 }
 
-.pay__price-row {
+.pay-desk__price {
   display: flex;
   align-items: baseline;
-  gap: 6px;
-  margin: 4px 0 16px;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  margin: 6px 0 22px;
 }
 
-.pay__price-row span {
-  font-size: 13px;
+.pay-desk__price span {
+  font-size: 15px;
   font-weight: 650;
   color: var(--neon);
 }
 
-.pay__price-row strong {
+.pay-desk__price strong {
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: clamp(2.4rem, 5vw, 3.15rem);
   font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
   color: var(--white);
 }
 
-.pay__coupon-note,
-.pay__account {
-  margin: 0 0 14px;
-  font-size: 12.5px;
+.pay-desk__price em {
+  font-style: normal;
+  font-size: 13px;
   color: var(--text-mute);
 }
 
-.pay__account strong {
+.pay-desk__note,
+.pay-desk__account {
+  margin: 0 0 18px;
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+.pay-desk__account {
+  margin: 18px 0 0;
+}
+
+.pay-desk__account strong {
   color: var(--text);
   font-weight: 600;
 }
 
-.pay__actions {
+.pay-desk__perks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin: 4px 0 0;
+}
+
+.pay-desk__perks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: rgba(200, 190, 220, 0.82);
+}
+
+.pay-desk__perks li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  margin-top: 7px;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  background: var(--neon);
+  box-shadow: 0 0 8px rgba(139, 107, 184, 0.5);
+}
+
+.pay-desk__stack {
   display: grid;
   gap: 10px;
 }
 
-.pay__back,
-.pay__coupon-toggle {
+.pay-desk__link {
   display: block;
-  margin-top: 14px;
+  margin-top: 16px;
   text-align: center;
   color: var(--text-dim);
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   background: none;
   width: 100%;
 }
 
-.pay__back:hover,
-.pay__coupon-toggle:hover {
+.pay-desk__link--left {
+  margin: 0 0 18px;
+  text-align: left;
+}
+
+.pay-desk__link:hover {
   color: var(--white);
 }
 
-.pay__coupon {
+.pay-desk__coupon {
   display: grid;
-  gap: 6px;
-  margin: 0 0 16px;
+  gap: 8px;
+  margin: 0 0 20px;
 }
 
-.pay__coupon span {
+.pay-desk__coupon span {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -3771,94 +3899,105 @@ body {
   color: var(--text-mute);
 }
 
-.pay__coupon input {
+.pay-desk__coupon input {
   width: 100%;
-  padding: 11px 12px;
+  padding: 13px 14px;
   color: var(--white);
   background: rgba(8, 6, 14, 0.55);
   border: 0;
   box-shadow: inset 0 0 0 1px rgba(140, 120, 170, 0.28);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.08em;
   outline: none;
 }
 
-.pay__coupon input:focus {
+.pay-desk__coupon input:focus {
   box-shadow: inset 0 0 0 1px rgba(180, 150, 220, 0.5);
 }
 
-.pay__error {
-  margin: 0 0 14px;
-  padding: 10px 12px;
+.pay-desk__error {
+  margin: 0 0 16px;
+  padding: 12px 14px;
   color: #f0dce8;
   background: rgba(140, 40, 70, 0.28);
   border: 1px solid rgba(200, 90, 120, 0.35);
-  font-size: 0.86rem;
+  font-size: 0.9rem;
   line-height: 1.45;
 }
 
-.pay__timer {
-  margin: 0 0 16px;
-  font-size: 12.5px;
-  letter-spacing: 0.06em;
+.pay-desk__timer {
+  margin: 0 0 18px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-mute);
 }
 
-.pay__qr {
+.pay-desk__qr {
   display: grid;
   place-items: center;
   width: fit-content;
-  margin: 0 auto 18px;
-  padding: 10px;
+  margin: 0 auto 22px;
+  padding: 12px;
   background: #fff;
   box-shadow: 0 0 0 1px rgba(190, 175, 220, 0.2);
 }
 
-.pay__qr img {
+.pay-desk__qr img {
   display: block;
-  width: 196px;
-  height: 196px;
+  width: 228px;
+  height: 228px;
 }
 
-.pay__code {
-  margin: 12px 0 0;
-  padding: 10px 12px;
-  font-size: 11px;
+.pay-desk__code {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  font-size: 12px;
   line-height: 1.45;
   color: var(--text-mute);
   word-break: break-all;
   background: rgba(8, 6, 14, 0.4);
   box-shadow: inset 0 0 0 1px rgba(140, 120, 170, 0.18);
-  max-height: 72px;
+  max-height: 76px;
   overflow: hidden;
 }
 
-.pay__wait {
-  margin: 16px 0 0;
+.pay-desk__wait {
+  margin: 18px 0 0;
   text-align: center;
   font-size: 12px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--neon-soft);
 }
 
-.pay__summary .plan__list {
-  margin-bottom: 18px;
-}
-
 @media (max-width: 820px) {
-  .pay__grid {
+  .pay-page {
+    align-items: flex-start;
+    padding: 104px 16px 40px;
+  }
+
+  .pay-desk__split {
     grid-template-columns: 1fr;
   }
 
-  .pay__card {
-    padding: 24px 20px 20px;
+  .pay-desk__col,
+  .pay-desk__body {
+    padding: 28px 22px 24px;
   }
 
-  .pay__qr img {
-    width: 168px;
-    height: 168px;
+  .pay-desk__col--action {
+    box-shadow: inset 0 1px 0 rgba(160, 130, 200, 0.16);
+  }
+
+  .pay-desk__qr img {
+    width: 200px;
+    height: 200px;
+  }
+
+  .pay-desk__copy {
+    max-width: none;
   }
 }
+
