@@ -36,7 +36,7 @@ export function getSiteUrl() {
   let raw = (
     process.env.NEXT_PUBLIC_SITE_URL ||
     process.env.SITE_URL ||
-    'https://srs.lat'
+    'https://www.srs.lat'
   )
     .trim()
     .replace(/\/$/, '')
@@ -45,9 +45,9 @@ export function getSiteUrl() {
     process.env.VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production'
 
   try {
-    const u = new URL(raw || 'https://srs.lat')
+    const u = new URL(raw || 'https://www.srs.lat')
     if (isProd && (u.hostname === 'localhost' || u.hostname === '127.0.0.1')) {
-      return 'https://srs.lat'
+      return 'https://www.srs.lat'
     }
     if (
       u.hostname === 'srs.lat' ||
@@ -58,7 +58,7 @@ export function getSiteUrl() {
     }
     return u.origin
   } catch {
-    return 'https://srs.lat'
+    return 'https://www.srs.lat'
   }
 }
 
