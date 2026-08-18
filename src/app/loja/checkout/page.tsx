@@ -3,15 +3,17 @@ import { notFound } from 'next/navigation'
 import { PLANS } from '@/data/site'
 import { discordAvatarUrl } from '@/lib/auth'
 import { getSessionUser } from '@/lib/session'
+import { pageMetadata } from '@/lib/seo'
 import { CheckoutClient } from './CheckoutClient'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Checkout',
   description: 'Pague com PIX e receba o acesso SRS na hora.',
-  robots: { index: false, follow: false },
-}
+  path: '/loja/checkout',
+  index: false,
+})
 
 export default async function CheckoutPage({
   searchParams,

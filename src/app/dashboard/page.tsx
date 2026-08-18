@@ -9,12 +9,14 @@ import {
   formatRemaining,
 } from '@/lib/auth'
 import { requireDashboardUser } from '@/lib/session'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Dashboard',
   description: 'Área do cliente SRS.',
-  robots: { index: false, follow: false },
-}
+  path: '/dashboard',
+  index: false,
+})
 
 export default async function DashboardPage() {
   const user = await requireDashboardUser()

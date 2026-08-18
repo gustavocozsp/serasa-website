@@ -2,12 +2,14 @@
 import Link from 'next/link'
 import { DISCORD_URL } from '@/data/site'
 import { safeNextPath } from '@/lib/auth'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Login',
   description: 'Entre com Discord para comprar ou acessar a dashboard SRS.',
-  robots: { index: false, follow: false },
-}
+  path: '/login',
+  index: false,
+})
 
 const ERRORS: Record<string, string> = {
   not_authorized:

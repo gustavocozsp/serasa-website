@@ -1,14 +1,26 @@
 ﻿import type { Metadata } from 'next'
 import Link from 'next/link'
+import { JsonLd } from '@/components/JsonLd'
+import { pageMetadata, webPageJsonLd } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Política de privacidade',
   description:
     'Política de privacidade do SRS: dados coletados, uso, retenção e seus direitos.',
-}
+  path: '/privacidade',
+})
 
 export default function PrivacidadePage() {
   return (
+    <>
+      <JsonLd
+        data={webPageJsonLd({
+          path: '/privacidade',
+          title: 'Política de privacidade SRS',
+          description:
+            'Política de privacidade do SRS: dados coletados, uso, retenção e seus direitos.',
+        })}
+      />
     <section className="legal">
       <article className="legal__panel">
         <header className="legal__header">
@@ -192,5 +204,6 @@ export default function PrivacidadePage() {
         </div>
       </article>
     </section>
+    </>
   )
 }

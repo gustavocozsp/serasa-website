@@ -1,15 +1,44 @@
 ﻿import type { Metadata } from 'next'
 import Link from 'next/link'
+import { JsonLd } from '@/components/JsonLd'
 import { DISCORD_URL, PLANS } from '@/data/site'
+import { pageMetadata, productListJsonLd, webPageJsonLd } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Loja',
   description:
-    'Compre sua licença SRS. Planos semanal, mensal, trimestral e anual com acesso completo ao painel.',
-}
+    'Compre sua licença SRS. Planos semanal, mensal, trimestral e anual com acesso completo ao painel FiveM.',
+  path: '/loja',
+  keywords: [
+    'comprar SRS',
+    'licença FiveM',
+    'plano SRS',
+    'SRS mensal',
+    'SRS anual',
+  ],
+})
 
 export default function LojaPage() {
+  const products = PLANS.map((plan) => ({
+    id: plan.id,
+    name: plan.name,
+    description: `${plan.duration}. ${plan.perks[0]}`,
+    price: plan.price,
+  }))
+
   return (
+    <>
+      <JsonLd
+        data={[
+          webPageJsonLd({
+            path: '/loja',
+            title: 'Loja SRS',
+            description:
+              'Compre sua licença SRS. Planos semanal, mensal, trimestral e anual com acesso completo ao painel.',
+          }),
+          productListJsonLd(products),
+        ]}
+      />
     <section className="section">
       <div className="container">
         <div className="section__head">
@@ -77,5 +106,6 @@ export default function LojaPage() {
         </div>
       </div>
     </section>
+    </>
   )
 }

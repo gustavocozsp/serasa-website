@@ -1,11 +1,38 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FeatureIcon } from '@/components/FeatureIcon'
+import { JsonLd } from '@/components/JsonLd'
 import { PanelMock } from '@/components/PanelMock'
 import { DISCORD_URL, FEATURES } from '@/data/site'
+import { pageMetadata, webPageJsonLd } from '@/lib/seo'
+
+export const metadata: Metadata = pageMetadata({
+  title: 'Domine o jogo',
+  description:
+    'SRS: otimização, Pure Mode, mira, skins e ajustes de input para FiveM. Domine o jogo. Seja o melhor.',
+  path: '/',
+  keywords: [
+    'SRS',
+    'FiveM',
+    'otimização FiveM',
+    'Pure Mode FiveM',
+    'crosshair overlay',
+    'painel FiveM',
+    'FPS GTA RP',
+  ],
+})
 
 export default function HomePage() {
   return (
     <>
+      <JsonLd
+        data={webPageJsonLd({
+          path: '/',
+          title: 'SRS · Domine o jogo',
+          description:
+            'SRS: otimização, Pure Mode, mira, skins e ajustes de input para FiveM. Domine o jogo. Seja o melhor.',
+        })}
+      />
       <section className="hero">
         <div className="hero__inner">
           <div className="hero__copy">

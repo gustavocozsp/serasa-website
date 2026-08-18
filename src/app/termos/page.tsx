@@ -1,13 +1,25 @@
 ﻿import type { Metadata } from 'next'
 import Link from 'next/link'
+import { JsonLd } from '@/components/JsonLd'
+import { pageMetadata, webPageJsonLd } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Termos de uso',
   description: 'Termos de uso do SRS: regras de licença, uso do software e responsabilidades.',
-}
+  path: '/termos',
+})
 
 export default function TermosPage() {
   return (
+    <>
+      <JsonLd
+        data={webPageJsonLd({
+          path: '/termos',
+          title: 'Termos de uso SRS',
+          description:
+            'Termos de uso do SRS: regras de licença, uso do software e responsabilidades.',
+        })}
+      />
     <section className="legal">
       <article className="legal__panel">
         <header className="legal__header">
@@ -178,5 +190,6 @@ export default function TermosPage() {
         </div>
       </article>
     </section>
+    </>
   )
 }
