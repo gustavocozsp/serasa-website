@@ -52,28 +52,28 @@ export const PLANS = [
   },
 ] as const
 
-export const DISCORD_URL = 'https://discord.gg/srs'
+export const DISCORD_URL = 'https://discord.gg/srsgg'
 
 export const SOCIALS = [
   {
     id: 'discord',
     label: 'Discord',
-    href: 'https://discord.gg/srs',
+    href: 'https://discord.gg/srsgg',
   },
   {
     id: 'twitter',
     label: 'Twitter',
-    href: 'https://x.com/srs',
+    href: 'https://x.com/serasafix',
   },
   {
     id: 'tiktok',
     label: 'TikTok',
-    href: 'https://www.tiktok.com/@srs',
+    href: 'https://www.tiktok.com/@serasafix',
   },
   {
-    id: 'youtube',
-    label: 'YouTube',
-    href: 'https://www.youtube.com/@srs',
+    id: 'instagram',
+    label: 'Instagram',
+    href: 'https://www.instagram.com/serasafix',
   },
 ] as const
 

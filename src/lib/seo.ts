@@ -162,14 +162,14 @@ export function pageMetadata({
 }
 
 export function organizationJsonLd() {
-  const discord = 'https://discord.gg/srs'
+  const discord = 'https://discord.gg/srsgg'
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: SITE_NAME,
     url: SITE_URL,
     logo: absoluteUrl('/favicon.svg'),
-    sameAs: [discord, 'https://x.com/srs', 'https://www.youtube.com/@srs'],
+    sameAs: [discord, 'https://x.com/serasafix', 'https://www.instagram.com/serasafix'],
   }
 }
 

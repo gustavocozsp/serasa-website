@@ -11,9 +11,9 @@ const LINKS = [
 export function Footer() {
   const year = new Date().getFullYear()
   const discord = SOCIALS.find((s) => s.id === 'discord')?.href || DISCORD_URL
-  const twitter = SOCIALS.find((s) => s.id === 'twitter')?.href || 'https://x.com/srs'
-  const youtube =
-    SOCIALS.find((s) => s.id === 'youtube')?.href || 'https://www.youtube.com/@srs'
+  const twitter = SOCIALS.find((s) => s.id === 'twitter')?.href || 'https://x.com/serasafix'
+  const instagram =
+    SOCIALS.find((s) => s.id === 'instagram')?.href || 'https://www.instagram.com/serasafix'
 
   return (
     <footer className="footer">
@@ -84,15 +84,15 @@ export function Footer() {
                 </svg>
               </a>
               <a
-                href={youtube}
+                href={instagram}
                 className="footer__social"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="YouTube"
-                title="YouTube"
+                aria-label="Instagram"
+                title="Instagram"
               >
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden>
-                  <path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.56A3.02 3.02 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14C4.5 20.5 12 20.5 12 20.5s7.5 0 9.38-.56a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
+                  <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-2.1a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z" />
                 </svg>
               </a>
             </div>

@@ -182,7 +182,7 @@ export default function TermosPage() {
             </h2>
             <p>
               Dúvidas sobre estes termos: Discord oficial{' '}
-              <a href="https://discord.gg/srs">discord.gg/srs</a>.
+              <a href="https://discord.gg/srsgg">discord.gg/srsgg</a>.
               Também veja a{' '}
               <Link href="/privacidade">política de privacidade</Link>.
             </p>

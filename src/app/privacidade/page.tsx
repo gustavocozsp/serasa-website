@@ -196,7 +196,7 @@ export default function PrivacidadePage() {
             </h2>
             <p>
               Privacidade: Discord{' '}
-              <a href="https://discord.gg/srs">discord.gg/srs</a>.
+              <a href="https://discord.gg/srsgg">discord.gg/srsgg</a>.
               Site: srs.lat. Veja também os{' '}
               <Link href="/termos">termos de uso</Link>.
             </p>
